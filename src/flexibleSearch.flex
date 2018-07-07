@@ -145,7 +145,7 @@ EOL                             = \n|\r\n
     "LAST"                                 { return LAST; }
     "FROM"                                 { yybegin(FROM_EXP); return FROM; }
     "JOIN"                                 { return JOIN; }
-    "ON"                                   { return ON; }
+    "ON"                                   { yybegin(ON_EXP); pushState(FROM_EXP); return ON; }
     "UNION"                                { return UNION; }
     "WHERE"                                { yybegin(WHERE_EXP); return WHERE; }
     "AND"                                  { return AND; }
@@ -276,7 +276,9 @@ EOL                             = \n|\r\n
     {RIGHT_BRACE}                          { yybegin(popState()); return RIGHT_BRACE; }
     {COMMA}                                { yybegin(popState()); return COMMA; }
     "LEFT"                                 { yybegin(FROM_EXP); return LEFT; }
-
+    "JOIN"                                 { yybegin(popState()); return JOIN; }
+    "ON"                                   { yybegin(ON_EXP); pushState(FROM_EXP); return ON; }
+      
     {EXCLAMATION_MARK}                     { return EXCLAMATION_MARK; }
     {QUESTION_MARK}                        { return QUESTION_MARK; }
     
@@ -348,7 +350,8 @@ EOL                             = \n|\r\n
     {RIGHT_BRACE}                          { yybegin(popState()); return RIGHT_BRACE; }
      
     "LEFT"                                 { yybegin(FROM_EXP); return LEFT; }
-
+    "JOIN"                                 { yybegin(TABLE_IDENTIFIER); return JOIN; }
+    
     /* operators */
     {EQUALS_OPERATOR}                      { return EQUALS_OPERATOR; }
     
@@ -370,7 +373,7 @@ EOL                             = \n|\r\n
     {RIGHT_BRACE}                          { yybegin(popState()); return RIGHT_BRACE; }
     
     {EQUALS_OPERATOR}                      { yybegin(popState()); return EQUALS_OPERATOR; }
-    {WHITE_SPACE}                          { yybegin(popState()); return WHITE_SPACE; }
+    {WHITE_SPACE}                          { return WHITE_SPACE; }
     
     {IDENTIFIER}                           { return COLUMN_REFERENCE_IDENTIFIER; }
 }
