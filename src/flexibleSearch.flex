@@ -144,7 +144,6 @@ EOL                             = \n|\r\n
     "FIRST"                                { return FIRST; }
     "LAST"                                 { return LAST; }
     "FROM"                                 { yybegin(FROM_EXP); return FROM; }
-    "JOIN"                                 { return JOIN; }
     "ON"                                   { yybegin(ON_EXP); pushState(FROM_EXP); return ON; }
     "UNION"                                { return UNION; }
     "WHERE"                                { yybegin(WHERE_EXP); return WHERE; }
@@ -276,8 +275,6 @@ EOL                             = \n|\r\n
     {RIGHT_BRACE}                          { yybegin(popState()); return RIGHT_BRACE; }
     {COMMA}                                { yybegin(popState()); return COMMA; }
     "LEFT"                                 { yybegin(FROM_EXP); return LEFT; }
-    "JOIN"                                 { yybegin(popState()); return JOIN; }
-    "ON"                                   { yybegin(ON_EXP); pushState(FROM_EXP); return ON; }
       
     {EXCLAMATION_MARK}                     { return EXCLAMATION_MARK; }
     {QUESTION_MARK}                        { return QUESTION_MARK; }
@@ -346,14 +343,13 @@ EOL                             = \n|\r\n
     {INTEGER}                              { return NUMBER; }
     {COMMENT}                              { return COMMENT; }
     
-    {LEFT_BRACE}                           { yybegin(COLUMN_IDENTIFIER); pushState(ON_EXP); return LEFT_BRACE; }
+    {LEFT_BRACE}                           { yybegin(COLUMN_IDENTIFIER); return LEFT_BRACE; }
     {RIGHT_BRACE}                          { yybegin(popState()); return RIGHT_BRACE; }
      
     "LEFT"                                 { yybegin(FROM_EXP); return LEFT; }
-    "JOIN"                                 { yybegin(TABLE_IDENTIFIER); return JOIN; }
     
     /* operators */
-    {EQUALS_OPERATOR}                      { return EQUALS_OPERATOR; }
+//    {EQUALS_OPERATOR}                      { return EQUALS_OPERATOR; }
     
     {IDENTIFIER}                           { return IDENTIFIER; }
 }
@@ -375,7 +371,7 @@ EOL                             = \n|\r\n
     {EQUALS_OPERATOR}                      { yybegin(popState()); return EQUALS_OPERATOR; }
     {WHITE_SPACE}                          { return WHITE_SPACE; }
     
-    {IDENTIFIER}                           { return COLUMN_REFERENCE_IDENTIFIER; }
+    {IDENTIFIER}                           { yybegin(popState()); return COLUMN_REFERENCE_IDENTIFIER; }
 }
 
 <LOCALIZATION> {
