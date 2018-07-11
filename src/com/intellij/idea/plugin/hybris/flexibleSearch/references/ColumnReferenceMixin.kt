@@ -58,7 +58,7 @@ internal class TypeSystemAttributeReference(owner: FlexibleSearchColumnReference
     private fun findReference(meta: TSMetaModel, itemType: Optional<FlexibleSearchTableName>, refName: String): Array<ResolveResult> {
         val metaClass = itemType
                 .map { it.text }
-                .map({ meta.findMetaClassByName(it) })
+                .map { meta.findMetaClassByName(it) }
 
         if (!metaClass.isPresent) {
             return ResolveResult.EMPTY_ARRAY

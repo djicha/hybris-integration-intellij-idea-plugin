@@ -41,15 +41,15 @@ class TypeSystemItemRef(owner: FlexibleSearchTableName) : TypeSystemReferenceBas
         val meta = typeSystemMeta
         val lookingForName = element.text
         val res0 = Optional.ofNullable(meta.findMetaClassByName(lookingForName))
-                .map({ it.retrieveAllDomsStream() })
+                .map { it.retrieveAllDomsStream() }
                 .orElse(Stream.empty())
-                .map({ ItemTypeResolveResult(it) })
+                .map { ItemTypeResolveResult(it) }
                 .toList()
 
         val res1 = meta.findRelationByName(lookingForName)
                 .distinctBy { it.name }
                 .map { it.retrieveDom() }
-                .map({ RelationResolveResult(it) })
+                .map { RelationResolveResult(it) }
                 .toList()
 
         return (res0 + res1).toTypedArray()

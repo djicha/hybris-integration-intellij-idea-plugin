@@ -32,7 +32,7 @@ public interface ImpexConstants {
     interface ModifierCommonValues {
 
         BooleanModifierValue[] BOOLEAN = BooleanModifierValue.values();
-        ImpexModifierValue[] PROCESSOR_TYPES = ImpexProcessorModifier.INSTANCE.values();
+        ImpexModifierValue[] PROCESSOR_TYPES = ImpexProcessorModifier.values();
         ImpexModifierValue[] NONE = new ImpexModifierValue[0];
     }
 }
