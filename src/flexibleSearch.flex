@@ -240,7 +240,7 @@ EOL                             = \n|\r\n
     {QUESTION_MARK}                        { return QUESTION_MARK; }
     {COLON}                                { return COLON; }
     {SEMICOLON}                            { return SEMICOLON; }
-
+    {EQUALS_OPERATOR}                      { return EQUALS_OPERATOR; }
 
     /* keywords */
     "SELECT"                               { yybegin(SELECT_EXP); pushState(FROM_EXP); return SELECT; }
